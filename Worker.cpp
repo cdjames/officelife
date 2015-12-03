@@ -10,6 +10,8 @@
 *********************************************************************/
 #include "Worker.hpp" // please see for function descriptions
 #include <iostream> // for testing
+#include <fstream>
+#include <sstream>
 
 Worker::Worker(int att_num, 	int att_sides, 
 				   int def_num, 	int def_sides, 	
@@ -144,10 +146,30 @@ CharType Worker::getType() const
 	return type;
 }
 
+Convo* Worker::getConversation()
+{
+	int size = this->conversations.size();
+	// std::cout << "convo size is " << size << std::endl;
+	if(size > 0)
+	{
+		/* get a random number between 0 and vector length*/
+		int num = (size < 2) ? 0 : (rand() % size);
+		// std::cout << "convo size is " << this->conversations.size() << std::endl;
+		// std::cout << "num is " << num << std::endl;
+		// std::cout << "message is " << this->conversations[num].message << std::endl;
+		return &this->conversations[num];
+	}
+	else
+	{
+		this->dummyConvo.active = false;
+		return &dummyConvo;
+	}
+}
+
 /* for testing */
 void Worker::listStats() const
 {
-	std::string worker[6] = { "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
 	
 	std::cout << "\ntype: " << worker[type] << std::endl;
 	std::cout << "attack.num: " << attack.num << std::endl;
@@ -179,4 +201,81 @@ int Worker::heal(int factor)
 void Worker::kill()
 {
 	computeStrength(orig_strength);
+}
+
+void Worker::readConvos()
+{
+	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	std::string name = worker[this->type];
+	replaceSpaces(name, " ", "-");
+	name += ".csv";
+
+	std::ifstream inputFile;
+	inputFile.open(name.c_str());
+	if (!inputFile)
+		std::cout << "Error opening input file " << name << "." << std::endl;
+	else
+	{
+		std::string line;
+		while(std::getline(inputFile, line))
+		{
+			Convo tempConvo;
+			std::istringstream sLine(line);
+			std::string field;
+			int count = 0;
+			while (getline(sLine, field, '^'))
+			{
+				switch(count)
+				{
+					case 0:
+						if(field == "FALSE")
+							tempConvo.active = false;
+						break;
+					case 1:
+						tempConvo.offer_item = field;
+						break;
+					case 2:
+						tempConvo.message = field;
+						break;
+					case 3:
+						tempConvo.answer = field;
+						break;
+					case 4:
+						tempConvo.aff_retort = field;
+						break;
+					case 5:
+						tempConvo.neg_retort = field;
+						break;
+				}
+
+				count++;
+			}
+			this->conversations.push_back(tempConvo);
+		}
+		// std::cout << this->conversations[1].active << std::endl;
+	}
+	/* close the files */
+	inputFile.close();
+	return;			
+}
+
+void Worker::replaceSpaces(std::string &string, std::string what, std::string rep)
+{
+	std::size_t found = string.find(what);
+	while(found != std::string::npos)
+	{
+		string.replace(found, what.length(), rep);
+		found = string.find(what, found+1);
+	}
+}
+void Worker::moveInactiveConvo()
+{
+	for (int i = 0; i < this->conversations.size(); i++)
+	{
+		if(!this->conversations[i].active)
+		{
+			this->inactive_convos.push_back(this->conversations[i]);
+			this->conversations.erase(this->conversations.begin()+i);
+		}
+	}
 }

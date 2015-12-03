@@ -9,8 +9,11 @@
 #ifndef WORKER_HPP
 #define WORKER_HPP
 #include "CharType.hpp" // enum enumerating Worker types
+#include "Convo.hpp" // struct to hold conversations
 #include <cstdlib>	// for rand()
 #include <string> 	// for listStats()
+#include <set>
+#include <vector>
 
 class Worker
 {
@@ -28,12 +31,21 @@ protected:
 	int 	armor;			// store armor value
 	double	strength,		// store strength value
 			orig_strength;	// store strength for revival purposes
+	/* Items */
+	std::set<std::string> items;
+	std::set<std::string> wants;
 	/* Status Booleans */
 	bool 	is_dead,		
 			attack_halved,
 			is_knocked_out;
 	/* Type of worker */
 	CharType type;
+	/* Conversations */
+	std::vector<Convo> conversations;
+	std::vector<Convo> inactive_convos;
+	Convo dummyConvo;
+
+	// std::string worker[6];
 
 	/*********************************************************************
 	** Description: 
@@ -87,13 +99,13 @@ public:
 	** Description: 
 	** Pure virtual; undefined in Worker
 	*********************************************************************/
-	virtual double attacks(Worker* target) = 0; // will be pure virtual
+	virtual double attacks(Worker* target){} // will be pure virtual
 
 	/*********************************************************************
 	** Description: 
 	** Pure virtual; undefined in Worker
 	*********************************************************************/
-	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false) = 0;
+	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false){}
 
 	/* getters */
 
@@ -127,6 +139,11 @@ public:
 	*********************************************************************/
 	virtual CharType getType() const;
 
+	virtual Convo* getConversation();
+
+
+	/* other helpful functions */
+
 	/*********************************************************************
 	** Description: 
 	** Testing function; List all attributes
@@ -154,6 +171,11 @@ public:
 	*********************************************************************/
 	virtual void kill();
 
+	virtual void readConvos();
+
+	virtual void replaceSpaces(std::string &string, std::string what, std::string rep);
+
+	virtual void moveInactiveConvo();
 }; // class Worker
 
 #endif
