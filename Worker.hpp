@@ -99,13 +99,13 @@ public:
 	** Description: 
 	** Pure virtual; undefined in Worker
 	*********************************************************************/
-	virtual double attacks(Worker* target){} // will be pure virtual
+	virtual double attacks(Worker* target) = 0; // will be pure virtual
 
 	/*********************************************************************
 	** Description: 
 	** Pure virtual; undefined in Worker
 	*********************************************************************/
-	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false){}
+	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false) = 0;
 
 	/* getters */
 
