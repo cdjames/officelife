@@ -141,6 +141,7 @@ public:
 
 	virtual Convo* getConversation();
 
+	virtual bool getItem(std::string item);
 
 	/* other helpful functions */
 
@@ -171,6 +172,7 @@ public:
 	*********************************************************************/
 	virtual void kill();
 
+	virtual void setItems();
 	virtual void readConvos();
 
 	virtual void replaceSpaces(std::string &string, std::string what, std::string rep);

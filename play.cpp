@@ -25,17 +25,19 @@ int main()
 	Convo *tConvo = worker->getConversation();
 	std::cout << tConvo->active << std::endl;
 	std::cout << tConvo->message << std::endl;
-	tConvo->active = false;
-	std::cout << tConvo->active << std::endl;
-	worker->moveInactiveConvo();
-	std::cout << tConvo->message << std::endl;
-	// Convo *tConvo2 = worker->getConversation();
-	tConvo = worker->getConversation();
-	std::cout << tConvo->message << std::endl;
-	tConvo->active = false;
-	worker->moveInactiveConvo();
-	tConvo = worker->getConversation();
-	std::cout << "\"" << tConvo->message << "\"" << std::endl;
+	std::cout << "pencil is " << worker->getItem("pencil") << std::endl;
+	std::cout << "pen is " << worker->getItem("pen") << std::endl;
+	// tConvo->active = false;
+	// std::cout << tConvo->active << std::endl;
+	// worker->moveInactiveConvo();
+	// std::cout << tConvo->message << std::endl;
+	// // Convo *tConvo2 = worker->getConversation();
+	// tConvo = worker->getConversation();
+	// std::cout << tConvo->message << std::endl;
+	// tConvo->active = false;
+	// worker->moveInactiveConvo();
+	// tConvo = worker->getConversation();
+	// std::cout << "\"" << tConvo->message << "\"" << std::endl;
 
 	// delete tConvo;
 }

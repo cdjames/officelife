@@ -28,6 +28,7 @@ Worker::Worker(int att_num, 	int att_sides,
 	strength = orig_strength = str;
 	type = t;
 	is_dead = attack_halved = is_knocked_out = false;
+	setItems();
 }
 
 Worker::~Worker() // empty deconstructor
@@ -166,6 +167,20 @@ Convo* Worker::getConversation()
 	}
 }
 
+bool Worker::getItem(std::string item)
+{
+	std::set<std::string>::iterator iter;
+	iter = this->items.find(item);
+	if(iter == items.end())
+		return false;
+	else
+	{
+		this->wants.insert(item);
+		this->items.erase(iter);
+		return true;
+	}
+}
+
 /* for testing */
 void Worker::listStats() const
 {
@@ -201,6 +216,28 @@ int Worker::heal(int factor)
 void Worker::kill()
 {
 	computeStrength(orig_strength);
+}
+
+void Worker::setItems()
+{
+	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	std::string name = worker[this->type];
+	replaceSpaces(name, " ", "-");
+	name += ".txt";
+
+	std::ifstream inputFile;
+	inputFile.open(name.c_str());
+	if (!inputFile)
+		std::cout << "Error opening input file " << name << "." << std::endl;
+	else
+	{
+		std::string word;
+		while(std::getline(inputFile, word))
+			this->items.insert(word);
+	}
+	/* close the files */
+	inputFile.close();
+	// std::cout << "setItems ran" << std::endl;
 }
 
 void Worker::readConvos()
