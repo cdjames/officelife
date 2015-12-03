@@ -11,7 +11,7 @@
 class You : public Worker
 {
 protected:
-	// all inherited from Worker
+	bool profdevelopment;
 public:
 	/*********************************************************************
 	** Description: 

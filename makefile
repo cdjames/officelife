@@ -13,7 +13,7 @@ CXXFLAGS += -pedantic-errors
 LDFLAGS = 
 # LDFLAGS = -lboost_date_time
 
-SRCS = Worker.cpp Secretary.cpp Billy.cpp ITGuy.cpp You.cpp
+SRCS = Worker.cpp Secretary.cpp Billy.cpp ITGuy.cpp You.cpp Manager.cpp
 # SRCS += Stack.cpp Queue.cpp IntStack.cpp
 # SRCS += Team.cpp Tournament.cpp
 # SRCS += play.cpp 

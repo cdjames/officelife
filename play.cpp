@@ -13,6 +13,7 @@
 #include "Billy.hpp"
 #include "ITGuy.hpp"
 #include "You.hpp"
+#include "Manager.hpp"
 
 
 int main()
