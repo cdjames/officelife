@@ -10,6 +10,8 @@
 #include <ctime>		// for time()
 #include "Worker.hpp"
 #include "Secretary.hpp"
+#include "Billy.hpp"
+#include "ITGuy.hpp"
 
 
 int main()

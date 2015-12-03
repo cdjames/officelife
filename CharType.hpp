@@ -4,4 +4,4 @@
 ** Description: An enumerator to be used with Workers.
 *********************************************************************/
 
-enum CharType { NONE=0, SECRETARY, IT, BILLY, YOU, MANAGER };
+enum CharType { NONE=0, SECRETARY, ITGUY, BILLY, YOU, MANAGER };
