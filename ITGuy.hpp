@@ -18,9 +18,9 @@ public:
 	** Default constructor. Will pass these values to Worker constructor.
 	** Set default attributes here.
 	*********************************************************************/
-	ITGuy(int att_num=1, 	int att_sides=6, 
-			  int def_num=1,	int def_sides=6, 	
-			  int arm=3, 	double str=10, 		
+	ITGuy(int att_num=2, 	int att_sides=10, 
+			  int def_num=2,	int def_sides=10, 	
+			  int arm=10, 	double str=20, 		
 			  CharType t=ITGUY
 			 );
 
