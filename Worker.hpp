@@ -26,6 +26,7 @@ protected:
 		DieVal() { num = sides = 0; }
 	};
 	/* Main attributes */
+	std::string name;
 	DieVal 	attack,			// store attack roll values
 			defense;		// store defense roll values
 	int 	armor;			// store armor value
@@ -143,6 +144,8 @@ public:
 
 	virtual bool getItem(std::string item);
 
+	virtual std::set<std::string> getItems();
+
 	/* other helpful functions */
 
 	/*********************************************************************
@@ -178,6 +181,8 @@ public:
 	virtual void replaceSpaces(std::string &string, std::string what, std::string rep);
 
 	virtual void moveInactiveConvo();
+
+	virtual std::string getName();
 }; // class Worker
 
 #endif

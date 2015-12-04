@@ -20,6 +20,7 @@ Worker::Worker(int att_num, 	int att_sides,
 				  )
 {
 	/* set default values */
+	std::string worker[6] = { "None", "Helpful Secretary", "Hapless IT Guy", "Billy from Receiving", "You", "Overbearing Manager" };
 	attack.num = att_num;
 	attack.sides = att_sides;
 	defense.num = def_num;
@@ -27,6 +28,8 @@ Worker::Worker(int att_num, 	int att_sides,
 	armor = arm;
 	strength = orig_strength = str;
 	type = t;
+	this->name = worker[this->type];
+	// std::cout << "\ntype: " << this->name << std::endl;
 	is_dead = attack_halved = is_knocked_out = false;
 	setItems();
 }
@@ -181,12 +184,17 @@ bool Worker::getItem(std::string item)
 	}
 }
 
+std::set<std::string> Worker::getItems()
+{
+	return this->items;
+}
+
 /* for testing */
 void Worker::listStats() const
 {
-	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
 	
-	std::cout << "\ntype: " << worker[type] << std::endl;
+	std::cout << "\ntype: " << this->name << std::endl;
 	std::cout << "attack.num: " << attack.num << std::endl;
 	std::cout << "attack.sides: " << attack.sides << std::endl;
 	std::cout << "defense.num: " << defense.num << std::endl;
@@ -220,15 +228,16 @@ void Worker::kill()
 
 void Worker::setItems()
 {
-	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
-	std::string name = worker[this->type];
-	replaceSpaces(name, " ", "-");
-	name += ".txt";
+	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	// std::string name = worker[this->type];
+	std::string temp_name = this->name;
+	replaceSpaces(temp_name, " ", "-");
+	temp_name += ".txt";
 
 	std::ifstream inputFile;
-	inputFile.open(name.c_str());
+	inputFile.open(temp_name.c_str());
 	if (!inputFile)
-		std::cout << "Error opening input file " << name << "." << std::endl;
+		std::cout << "Error opening input file " << temp_name << "." << std::endl;
 	else
 	{
 		std::string word;
@@ -242,13 +251,13 @@ void Worker::setItems()
 
 void Worker::readConvos()
 {
-	std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
-	std::string name = worker[this->type];
-	replaceSpaces(name, " ", "-");
-	name += ".csv";
+	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
+	std::string temp_name = this->name;
+	replaceSpaces(temp_name, " ", "-");
+	temp_name += ".csv";
 
 	std::ifstream inputFile;
-	inputFile.open(name.c_str());
+	inputFile.open(temp_name.c_str());
 	if (!inputFile)
 		std::cout << "Error opening input file " << name << "." << std::endl;
 	else
@@ -315,4 +324,9 @@ void Worker::moveInactiveConvo()
 			this->conversations.erase(this->conversations.begin()+i);
 		}
 	}
+}
+
+std::string Worker::getName()
+{
+	return this->name;
 }
