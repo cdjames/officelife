@@ -24,7 +24,7 @@ int main()
 	// srand(std::time(0)); // seed the random number generator used Creature die function
 	Worker *worker = new Secretary();
 	Worker *worker2 = new ITGuy();
-	Worker *worker3 = new You();
+	Worker *you = new You();
 	// worker->listStats();
 	// worker->readConvos();
 	// Convo *tConvo = worker->getConversation();
@@ -35,7 +35,10 @@ int main()
 
 	Space *space = new Space(worker);
 	Space *space2 = new Space(worker2);
-	Space *space3 = new Space(worker3);
+	Space *space3 = new Space(you);
+	Space *current = new Space(worker2);
+	current = space3;
+	std::cout << "now in " << current->getName() << std::endl;
 	std::vector<Path*> paths;
 	std::vector<std::string> names;
 	names.push_back(space2->getName());
@@ -45,10 +48,12 @@ int main()
 	space->setPaths(names, paths);
 	// std::cout << space2->getName() << ": \n";
 	worker2->listStats();
-	space2->addVisitor(worker3);
-	space2->search();
-	worker3->listStats();
-	worker2->listStats();
+	space->addVisitor(you);
+	current = space->travel(you);
+	std::cout << "now in " << current->getName() << std::endl;
+	// space2->search(worker3);
+	// worker3->listStats();
+	// worker2->listStats();
 
 	// tConvo->active = false;
 	// std::cout << tConvo->active << std::endl;

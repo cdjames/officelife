@@ -24,6 +24,7 @@ private:
 	std::string name;
 	Worker* resident;
 	Worker* visitor;
+	Space* from;
 	std::map<std::string, Path> paths;
 	std::set<std::string> items;
 	std::set<std::string> taken_items;
@@ -34,14 +35,15 @@ public:
 	Space(Worker* resident = NULL, Worker* visitor = NULL);
 	virtual ~Space();
 	virtual void converse(Worker* visitor);
-	virtual void travel();
-	virtual void search();
+	virtual Space* travel(Worker* visitor);
+	virtual void search(Worker* visitor);
 	// virtual void special() = 0; // pure virtual
 	virtual void special(){} // pure virtual
 
 	virtual void setItems(Worker* subject = NULL);
 	virtual std::vector<std::string> getActions();
 	virtual bool setPaths(std::vector<std::string> names, std::vector<Path*> paths);
+	virtual bool setFrom(Space* from);
 	virtual std::string getName();
 	/*********************************************************************
 	** Description: 
@@ -73,6 +75,8 @@ public:
 	virtual bool cinFail();
 
 	virtual void addVisitor(Worker *visitor);
+
+	virtual void activatePath(std::string name);
 };
 
 #endif

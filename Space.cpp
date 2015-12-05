@@ -23,6 +23,7 @@ Space::Space(Worker* resident, Worker* visitor)
 {
 	this->resident = resident;
 	this->visitor = visitor;
+	this->from = NULL;
 	this->can_take = true;
 	std::cout << resident->getName() << std::endl;
 	if(resident == NULL)
@@ -39,21 +40,68 @@ Space::~Space()
 		delete resident;
 	if(visitor)
 		delete visitor;
+	if(from)
+		delete from;
 }
 
 void Space::converse(Worker* visitor)
 {
 
 }
-void Space::travel()
+Space* Space::travel(Worker* visitor)
 {
+	std::map<std::string, Path>::iterator it = this->paths.begin(),
+									saved;
+	std::cout << "Where would you like to go?" << std::endl;
+	for (it; it != this->paths.end(); ++it)
+		std::cout << "    • " << it->first << std::endl;
+	int c, choice;
+	for (it = this->paths.begin(), c = 0; it != this->paths.end(); ++it, c++)
+	{
+		std::cout << "    » Press " << c << " for " << it->first << std::endl;
+		saved = it;	// save to use outside block
+	}
 
+	intakeNum(choice, "enter your choice, or -1 to leave them.");
+	
+	switch(choice)
+	{
+		case -1:
+			std::cout << "Yeah, guess I should stay..." << std::endl;
+			return NULL;
+			break;
+		default:
+			saved = this->paths.begin();
+			for (int i = 0; i < choice; i++)
+				saved++;
+			std::cout << "Trudging to " << saved->first << "." << std::endl;
+			
+			/* make the current space active if not */
+			if(this->from)
+			{
+				this->from->activatePath(saved->first);
+			}
+			saved->second.destination->setFrom(this);
+			this->visitor = NULL;
+			return saved->second.destination;
+			break;
+	}
 }
 
-void Space::search()
+void Space::activatePath(std::string name)
 {
-	std::set<std::string>::iterator it = this->items.begin();
-	std::set<std::string>::iterator saved;
+	std::cout << "path to activate: " << name << std::endl;
+}
+
+bool Space::setFrom(Space* from)
+{
+	this->from = from;
+}
+
+void Space::search(Worker* visitor)
+{
+	std::set<std::string>::iterator it = this->items.begin(),
+									saved;
 	std::cout << "This is what you see in the room..." << std::endl;
 
 	for (it; it != this->items.end(); ++it)
@@ -66,7 +114,7 @@ void Space::search()
 		for (it = this->items.begin(), c = 0; it != this->items.end(); ++it, c++)
 		{
 			std::cout << "    » Press " << c << " for " << *it << std::endl;
-			saved = it;
+			saved = it;	// save to use outside block
 		}
 
 		intakeNum(choice, "enter your choice, or -1 to leave them.");
@@ -77,12 +125,15 @@ void Space::search()
 				std::cout << "Yeah, probably shouldn't take anything..." << std::endl;
 				break;
 			default:
+				saved = this->items.begin();
+				for (int i = 0; i < choice; i++)
+					saved++;
 				std::cout << "You got the " << *saved << "!" << std::endl;
 				// std::string save = *saved;
-				this->visitor->addItem(*saved);
-				this->resident->removeItem(*saved);
-				this->taken_items.insert(*saved);
-				this->items.erase(saved);
+				visitor->addItem(*saved);
+				resident->removeItem(*saved);
+				taken_items.insert(*saved);
+				items.erase(saved);
 				break;
 		}
 	}
