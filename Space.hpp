@@ -43,7 +43,7 @@ public:
 	virtual void setItems(Worker* subject = NULL);
 	virtual std::vector<std::string> getActions();
 	virtual bool setPaths(std::vector<std::string> names, std::vector<Path*> paths);
-	virtual bool setFrom(Space* from);
+	virtual void setFrom(Space* from);
 	virtual std::string getName();
 	/*********************************************************************
 	** Description: 
@@ -76,7 +76,9 @@ public:
 
 	virtual void addVisitor(Worker *visitor);
 
-	virtual void activatePath(std::string name);
+	virtual bool activatePath(std::string name);
+
+	virtual void removeItem(std::string item);
 };
 
 #endif

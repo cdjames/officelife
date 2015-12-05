@@ -32,6 +32,7 @@ Worker::Worker(int att_num, 	int att_sides,
 	// std::cout << "\ntype: " << this->name << std::endl;
 	is_dead = attack_halved = is_knocked_out = false;
 	setItems();
+	readConvos();
 }
 
 Worker::~Worker() // empty deconstructor
@@ -285,6 +286,10 @@ void Worker::readConvos()
 							tempConvo.active = false;
 						break;
 					case 1:
+						if(field == "")
+							field = "";
+						else // trim first and last characters
+							field = field.substr(1, field.length()-2);
 						tempConvo.offer_item = field;
 						break;
 					case 2:
