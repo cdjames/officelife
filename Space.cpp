@@ -23,6 +23,7 @@ Space::Space(Worker* resident, Worker* visitor)
 {
 	this->resident = resident;
 	this->visitor = visitor;
+	this->can_take = true;
 	std::cout << resident->getName() << std::endl;
 	if(resident == NULL)
 		this->name = "Break room";
@@ -42,7 +43,7 @@ Space::~Space()
 
 void Space::converse(Worker* visitor)
 {
-	
+
 }
 void Space::travel()
 {
@@ -51,10 +52,40 @@ void Space::travel()
 
 void Space::search()
 {
+	std::set<std::string>::iterator it = this->items.begin();
+	std::set<std::string>::iterator saved;
 	std::cout << "This is what you see in the room..." << std::endl;
 
-	for (std::set<std::string>::iterator it = this->items.begin(); it != this->items.end(); ++it)
+	for (it; it != this->items.end(); ++it)
 		std::cout << "    • " << *it << std::endl;
+
+	if(this->can_take)
+	{
+		std::cout << "Is there something that interests you?" << std::endl;
+		int c, choice;
+		for (it = this->items.begin(), c = 0; it != this->items.end(); ++it, c++)
+		{
+			std::cout << "    » Press " << c << " for " << *it << std::endl;
+			saved = it;
+		}
+
+		intakeNum(choice, "enter your choice, or -1 to leave them.");
+		
+		switch(choice)
+		{
+			case -1:
+				std::cout << "Yeah, probably shouldn't take anything..." << std::endl;
+				break;
+			default:
+				std::cout << "You got the " << *saved << "!" << std::endl;
+				// std::string save = *saved;
+				this->visitor->addItem(*saved);
+				this->resident->removeItem(*saved);
+				this->taken_items.insert(*saved);
+				this->items.erase(saved);
+				break;
+		}
+	}
 
 }
 
@@ -87,4 +118,26 @@ std::string Space::getName()
 std::vector<std::string> Space::getActions()
 {
 	return this->actions;
+}
+
+void Space::addVisitor(Worker *visitor)
+{
+	this->visitor = visitor;
+}
+
+void Space::clearCin()
+{
+	std::cin.clear();
+	std::cin.ignore(50, '\n');
+}
+
+bool Space::cinFail()
+{
+	bool failed = false;
+	if(std::cin.fail()) // check for bad input
+	{
+		clearCin(); // ignore the bad input
+		failed = true;
+	}
+	return failed;
 }

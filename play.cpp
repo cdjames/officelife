@@ -44,7 +44,11 @@ int main()
 	paths.push_back(new Path(space3, true));
 	space->setPaths(names, paths);
 	// std::cout << space2->getName() << ": \n";
-	// space2->search();
+	worker2->listStats();
+	space2->addVisitor(worker3);
+	space2->search();
+	worker3->listStats();
+	worker2->listStats();
 
 	// tConvo->active = false;
 	// std::cout << tConvo->active << std::endl;

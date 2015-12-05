@@ -170,7 +170,7 @@ Convo* Worker::getConversation()
 	}
 }
 
-bool Worker::getItem(std::string item)
+bool Worker::removeItem(std::string item)
 {
 	std::set<std::string>::iterator iter;
 	iter = this->items.find(item);
@@ -184,6 +184,11 @@ bool Worker::getItem(std::string item)
 	}
 }
 
+bool Worker::addItem(std::string item)
+{
+	this->items.insert(item);
+}
+
 std::set<std::string> Worker::getItems()
 {
 	return this->items;
@@ -195,14 +200,16 @@ void Worker::listStats() const
 	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
 	
 	std::cout << "\ntype: " << this->name << std::endl;
-	std::cout << "attack.num: " << attack.num << std::endl;
-	std::cout << "attack.sides: " << attack.sides << std::endl;
-	std::cout << "defense.num: " << defense.num << std::endl;
-	std::cout << "defense.sides: " << defense.sides << std::endl;
-	std::cout << "armor: " << armor << std::endl;
-	std::cout << "strength: " << strength << std::endl;
-	std::cout << "sample attack roll: " << getRoll(this->attack) << std::endl;
-	std::cout << "sample defense roll: " << getRoll(this->defense) << std::endl;
+	// std::cout << "attack.num: " << attack.num << std::endl;
+	// std::cout << "attack.sides: " << attack.sides << std::endl;
+	// std::cout << "defense.num: " << defense.num << std::endl;
+	// std::cout << "defense.sides: " << defense.sides << std::endl;
+	// std::cout << "armor: " << armor << std::endl;
+	// std::cout << "strength: " << strength << std::endl;
+	// std::cout << "sample attack roll: " << getRoll(this->attack) << std::endl;
+	// std::cout << "sample defense roll: " << getRoll(this->defense) << std::endl;
+	for (std::set<std::string>::iterator it = this->items.begin(); it != this->items.end(); ++it)
+		std::cout << "items: " << *it << std::endl;
 	// std::cout << ""is_dead = 
 	// std::cout << ""attack_halved = is_knocked_out = false;
 }

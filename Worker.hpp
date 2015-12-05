@@ -142,7 +142,8 @@ public:
 
 	virtual Convo* getConversation();
 
-	virtual bool getItem(std::string item);
+	virtual bool removeItem(std::string item);
+	virtual bool addItem(std::string item);
 
 	virtual std::set<std::string> getItems();
 
