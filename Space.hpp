@@ -39,8 +39,8 @@ public:
 	virtual void converse(Worker* visitor);
 	virtual Space* travel(Worker* visitor);
 	virtual void search(Worker* visitor);
-	// virtual void special() = 0; // pure virtual
-	virtual void special(){} // pure virtual
+	virtual void special() = 0; // pure virtual
+	// virtual void special(){} // pure virtual
 
 	virtual void setItems(Worker* subject = NULL);
 	virtual std::vector<std::string> getActions();
@@ -84,6 +84,10 @@ public:
 	virtual void removeItem(std::string item);
 
 	virtual void setActions(std::string action1 = "search", std::string action2 = "talk", std::string action3 = "move", std::string action4 = "check your items", std::string action5 = "");
+
+	virtual void deItem();
+
+	virtual void setCanTake(bool can = true);
 };
 
 #endif

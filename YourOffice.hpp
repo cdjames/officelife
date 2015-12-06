@@ -14,7 +14,7 @@ public:
 
 	virtual void special(){} // pure virtual
 
-	virtual void deItem();
+	// virtual void deItem();
 };
 
 #endif

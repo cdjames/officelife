@@ -42,6 +42,8 @@ public:
 	** to avoid duplicating
 	*********************************************************************/
 	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false);
+
+	virtual void removeItems();
 };
 
 #endif

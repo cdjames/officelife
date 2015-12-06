@@ -61,3 +61,8 @@ double You::defend(double attack_val, CharType attacker, bool halve_attack)
 	else
 		return inflictDamage(attack_val, halve_attack);
 }
+
+void You::removeItems()
+{
+		this->items.clear();
+}

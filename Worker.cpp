@@ -163,7 +163,10 @@ Convo* Worker::getConversation()
 		// std::cout << "convo size is " << this->conversations.size() << std::endl;
 		// std::cout << "num is " << num << std::endl;
 		// std::cout << "message is " << this->conversations[num].message << std::endl;
-		return &this->conversations[num];
+		// if(conversations[num].active)
+			return &this->conversations[num];
+		// else
+		// 	getConversation();
 	}
 	else
 	{
@@ -200,21 +203,25 @@ std::set<std::string> Worker::getItems()
 void Worker::listStats() const
 {
 	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
-	
-	// std::cout << "\ntype: " << this->name << std::endl;
-	std::cout << "\nYour items: " << std::endl;
-	// std::cout << "attack.num: " << attack.num << std::endl;
-	// std::cout << "attack.sides: " << attack.sides << std::endl;
-	// std::cout << "defense.num: " << defense.num << std::endl;
-	// std::cout << "defense.sides: " << defense.sides << std::endl;
-	// std::cout << "armor: " << armor << std::endl;
-	// std::cout << "strength: " << strength << std::endl;
-	// std::cout << "sample attack roll: " << getRoll(this->attack) << std::endl;
-	// std::cout << "sample defense roll: " << getRoll(this->defense) << std::endl;
-	for (std::set<std::string>::iterator it = this->items.begin(); it != this->items.end(); ++it)
-		std::cout << "    • " << *it << std::endl;
-	// std::cout << ""is_dead = 
-	// std::cout << ""attack_halved = is_knocked_out = false;
+	if(this->items.size() != 0)
+	{
+		// std::cout << "\ntype: " << this->name << std::endl;
+		std::cout << "\nYour items: " << std::endl;
+		// std::cout << "attack.num: " << attack.num << std::endl;
+		// std::cout << "attack.sides: " << attack.sides << std::endl;
+		// std::cout << "defense.num: " << defense.num << std::endl;
+		// std::cout << "defense.sides: " << defense.sides << std::endl;
+		// std::cout << "armor: " << armor << std::endl;
+		// std::cout << "strength: " << strength << std::endl;
+		// std::cout << "sample attack roll: " << getRoll(this->attack) << std::endl;
+		// std::cout << "sample defense roll: " << getRoll(this->defense) << std::endl;
+		for (std::set<std::string>::iterator it = this->items.begin(); it != this->items.end(); ++it)
+			std::cout << "    • " << *it << std::endl;
+		// std::cout << ""is_dead = 
+		// std::cout << ""attack_halved = is_knocked_out = false;
+	} 
+	else
+		std::cout << "\nYou don't have anything yet." << std::endl;
 }
 
 void Worker::revive()
@@ -281,11 +288,19 @@ void Worker::readConvos()
 			int count = 0;
 			while (getline(sLine, field, '^'))
 			{
+				if(this->getName() == "Helpful Secretary")
+					std::cout << field << std::endl;
 				switch(count)
 				{
 					case 0:
 						if(field == "FALSE")
+						{
 							tempConvo.active = false;
+							if(this->getName() == "Helpful Secretary")
+								std::cout << "convo active false " << tempConvo.active << std::endl;
+							// std::cout << field << std::endl;
+						}
+							
 						break;
 					case 1:
 						if(field == "")

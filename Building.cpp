@@ -65,17 +65,50 @@ int Building::checkItems()
 			if(iter != hero_items.end())
 			{
 				std::cout << "Found suspenders" << std::endl;
+				this->offices["Helpful Secretary"]->getResident()->setConvosActive();
 				this->suspenders = true;
 				this->found_items++;
+			}
+		}
+
+		if(!this->shirt)
+		{
+			iter = hero_items.find("Hawaiian shirt");
+			if(iter != hero_items.end())
+			{
+				this->offices["Hapless IT Guy"]->getResident()->setConvosActive();
+			}
+		}
+
+		if(!this->cake)
+		{
+			iter = hero_items.find("cake");
+			if(iter != hero_items.end())
+			{
+				this->offices["Billy from Receiving"]->getResident()->setConvosActive();
+			}
+		}
+
+		if(!this->hint)
+		{
+			iter = hero_items.find("hint");
+			if(iter != hero_items.end())
+			{
+				this->offices["Overbearing Manager"]->setCanTake();
 			}
 		}
 	}
 	else if(!freedom)
 	{
-		this->offices["Breakroom"]->getResident()->setConvosActive();	
+		// iter = hero_items.find("Personal Freedom");
+		// if(iter != hero_items.end())
+		// {
+			this->offices["Breakroom"]->getResident()->setConvosActive();	
+		// }
 	}
 	return 1;
 }
+
 int Building::doTurn()
 {
 
@@ -123,11 +156,14 @@ int Building::doTurn()
 void Building::setUpOffices()
 {
 	Space* youroffice = new YourOffice(this->hero);
-	Space* breakroom = new Space(new Stranger());
-	Space* secretary = new Space(new Secretary());
-	Space* itguy = new Space(new ITGuy());
-	Space* manager = new Space(new Manager());
-	Space* billy = new Space(new Billy());
+	Space* breakroom = new Breakroom(new Stranger());
+	Space* secretary = new FriendlyOffice(new Secretary());
+	Space* itguy = new AdminOffice(new ITGuy());
+	Space* manager = new AdminOffice(new Manager());
+	Space* billy = new FriendlyOffice(new Billy());
+
+	youroffice->deItem();
+	youroffice->setCanTake();
 
 	setUpPaths(youroffice, manager, itguy, breakroom, secretary, billy);
 	setUpPaths(breakroom, youroffice, manager, itguy, secretary, billy, true, true, true, true, true);

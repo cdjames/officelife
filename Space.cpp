@@ -9,7 +9,7 @@ Space::Space(Worker* resident, Worker* visitor)
 	this->resident = resident;
 	this->visitor = visitor;
 	this->from = NULL;
-	this->can_take = true;
+	this->can_take = false;
 	// std::cout << resident->getName() << std::endl;
 	if(resident == NULL)
 		this->name = "Break room";
@@ -33,7 +33,10 @@ Space::~Space()
 void Space::converse(Worker* visitor)
 {
 	Convo* conversation = this->resident->getConversation();
+	while(!conversation->active)
+		conversation = this->resident->getConversation();
 	int choice;
+	std::cout << "conversation active: " << conversation->active << std::endl;
 	if(conversation->active)
 	{
 		std::string name = this->resident->getName();
@@ -115,24 +118,27 @@ Space* Space::travel(Worker* visitor)
 				// for (int i = 0; i < choice; i++)
 				// 	savedpath++;
 				std::cout << "Trudging to " << savedpath[choice]->first << "." << std::endl;
-				
+				std::cout << "Space.cpp line 121..." << std::endl;
 				if(savedpath[choice]->first == "Hapless IT Guy's office"
 					|| savedpath[choice]->first == "Overbearing Manager's office")
 					Space::shortcut++;
-				// std::cout << "shortcut: " << Space::shortcut << std::endl;
+				std::cout << "shortcut: " << Space::shortcut << std::endl;
 				if(Space::shortcut == 2)
 				{
+					std::cout << "Space.cpp line 128..." << std::endl;
 					if(this->paths["Hapless IT Guy's office"].destination->activatePath("Overbearing Manager's office"))
 					{
+						std::cout << "Space.cpp line 131..." << std::endl;
 						std::cout << "You can now access " << "Hapless IT Guy's office" << " directly from " 
 								  << "Overbearing Manager's office" << "." << std::endl;
 
 						this->paths["Overbearing Manager's office"].destination->activatePath("Hapless IT Guy's office");
+						Space::shortcut++;
 					}
 				}
-				
+				std::cout << "Space.cpp line 136..." << std::endl;
 				/* make the current space active in previous space if it wasn't */
-				if(this->from)
+				if(this->from != NULL)
 				{
 					/* if the path wasn't already active, activate it and inform user */
 					if(this->from->activatePath(savedpath[choice]->first))
@@ -142,6 +148,7 @@ Space* Space::travel(Worker* visitor)
 						savedpath[choice]->second.destination->activatePath(this->from->getName());
 					}
 				}
+				std::cout << "Space.cpp line 148..." << std::endl;
 				/* set this object as the "from" object in the destination space */
 				savedpath[choice]->second.destination->setFrom(this);
 				/* if there was a visitor, remove it */
@@ -214,7 +221,8 @@ void Space::search(Worker* visitor)
 					std::cout << "You got the " << *saveditem << "!" << std::endl;
 					// std::string save = *saved;
 					visitor->addItem(*saveditem);
-					resident->removeItem(*saveditem);
+					if(resident != visitor) // if not in your own office
+						resident->removeItem(*saveditem);
 					taken_items.insert(*saveditem);
 					items.erase(saveditem);
 					break;
@@ -295,4 +303,14 @@ bool Space::cinFail()
 		failed = true;
 	}
 	return failed;
+}
+
+void Space::deItem()
+{
+	this->resident->removeItems();
+}
+
+void Space::setCanTake(bool can)
+{
+	this->can_take = can;
 }

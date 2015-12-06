@@ -15,7 +15,7 @@ LDFLAGS =
 
 SRCS = Worker.cpp Secretary.cpp Stranger.cpp Billy.cpp ITGuy.cpp You.cpp Manager.cpp
 SRCS += Space.cpp Building.cpp Utils.cpp
-SRCS += YourOffice.cpp
+SRCS += YourOffice.cpp AdminOffice.cpp FriendlyOffice.cpp Breakroom.cpp
 # SRCS += play.cpp 
 SRCS += play.cpp 
 

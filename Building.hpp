@@ -2,6 +2,10 @@
 #define BUILDING_HPP
 #include "Worker.hpp"
 #include "Space.hpp"
+#include "YourOffice.hpp"
+#include "FriendlyOffice.hpp"
+#include "AdminOffice.hpp"
+#include "Breakroom.hpp"
 
 class Building
 {
@@ -14,6 +18,9 @@ private:
 	bool stapler;
 	bool printer;
 	bool suspenders;
+	bool shirt;
+	bool cake;
+	bool hint;
 	bool freedom;
 public:
 	Building();

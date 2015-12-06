@@ -108,6 +108,7 @@ public:
 	*********************************************************************/
 	virtual double defend(double attack_val, CharType attacker, bool halve_attack = false) = 0;
 
+	virtual void removeItems() = 0;
 	/* getters */
 
 	/*********************************************************************
@@ -143,6 +144,7 @@ public:
 	virtual Convo* getConversation();
 
 	virtual bool removeItem(std::string item);
+
 	virtual bool addItem(std::string item);
 
 	virtual std::set<std::string> getItems();
@@ -177,6 +179,7 @@ public:
 	virtual void kill();
 
 	virtual void setItems();
+
 	virtual void readConvos();
 
 	virtual void replaceSpaces(std::string &string, std::string what, std::string rep);
