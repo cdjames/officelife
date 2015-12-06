@@ -341,6 +341,15 @@ void Worker::moveInactiveConvo()
 	}
 }
 
+void Worker::setConvosActive()
+{
+	int size = conversations.size();
+	for (int i = 0; i < size; i++)
+	{
+		if(conversations[i].active == false)
+			conversations[i].active = true;
+	}
+}
 std::string Worker::getName()
 {
 	return this->name;

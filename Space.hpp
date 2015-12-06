@@ -47,6 +47,7 @@ public:
 	virtual bool setPaths(std::vector<std::string> names, std::vector<Path*> paths);
 	virtual void setFrom(Space* from);
 	virtual std::string getName();
+	virtual Worker* getResident();
 	/*********************************************************************
 	** Description: 
 	** Intake a numeral and record it into a variable (with input checking)

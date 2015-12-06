@@ -5,6 +5,7 @@
 #include "You.hpp"
 #include "Manager.hpp"
 #include "Stranger.hpp"
+#include "YourOffice.hpp"
 #include "Utils.hpp"
 
 Building::Building()
@@ -13,6 +14,8 @@ Building::Building()
 	this->time = 480;
 	setUpOffices();
 	openingStory();
+	this->found_items = 0;
+	this->stapler = this->printer = this->suspenders = this->freedom = false;
 }
 Building::~Building()
 {
@@ -29,17 +32,54 @@ int Building::checkItems()
 	std::set<std::string>::iterator iter;
 	std::set<std::string> hero_items = this->hero->getItems();
 	iter = hero_items.find("Personal Freedom");
-	if(iter != items.end())
+	if(iter != hero_items.end())
 		return 0;
 
-	iter = hero_items.find("HP LaserJet Printer");
-	if(iter != items.end())
-		return 0;
+	else if(this->found_items < 3)
+	{
+		if(!this->printer)
+		{
+			iter = hero_items.find("HP LaserJet Printer");
+			if(iter != hero_items.end())
+			{
+				std::cout << "Found printer" << std::endl;
+				this->printer = true;
+				this->found_items++;
+			}
+		}
+		
+		if(!this->stapler)
+		{
+			iter = hero_items.find("Red Swingline Stapler");
+			if(iter != hero_items.end())
+			{
+				std::cout << "Found stapler" << std::endl;
+				this->stapler = true;
+				this->found_items++;
+			}
+		}
+		
+		if(!this->suspenders)
+		{
+			iter = hero_items.find("Chotchkie's suspenders");
+			if(iter != hero_items.end())
+			{
+				std::cout << "Found suspenders" << std::endl;
+				this->suspenders = true;
+				this->found_items++;
+			}
+		}
+	}
+	else if(!freedom)
+	{
+		this->offices["Breakroom"]->getResident()->setConvosActive();	
+	}
+	return 1;
 }
 int Building::doTurn()
 {
 
-	int result = 1,
+	int result = checkItems(),
 		menu;
 	menu = displayMenu();
 	switch(menu)
@@ -82,7 +122,7 @@ int Building::doTurn()
 }
 void Building::setUpOffices()
 {
-	Space* youroffice = new Space(this->hero);
+	Space* youroffice = new YourOffice(this->hero);
 	Space* breakroom = new Space(new Stranger());
 	Space* secretary = new Space(new Secretary());
 	Space* itguy = new Space(new ITGuy());

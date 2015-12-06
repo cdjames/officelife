@@ -184,6 +184,8 @@ public:
 	virtual void moveInactiveConvo();
 
 	virtual std::string getName();
+
+	virtual void setConvosActive();
 }; // class Worker
 
 #endif

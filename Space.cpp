@@ -266,6 +266,10 @@ std::string Space::getName()
 	return this->name;
 }
 
+Worker* Space::getResident()
+{
+	return this->resident;
+}
 std::vector<std::string> Space::getActions()
 {
 	return this->actions;

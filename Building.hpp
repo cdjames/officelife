@@ -10,6 +10,11 @@ private:
 	std::map<std::string, Space*> offices;
 	int time;
 	Space* current_office;
+	int found_items;
+	bool stapler;
+	bool printer;
+	bool suspenders;
+	bool freedom;
 public:
 	Building();
 	~Building();
@@ -22,6 +27,7 @@ public:
 	int getTime();
 	int subtractTime(int minutes);
 	int displayMenu();
+	int checkItems();
 };
 
 #endif
