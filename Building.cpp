@@ -4,6 +4,7 @@
 #include "ITGuy.hpp"
 #include "You.hpp"
 #include "Manager.hpp"
+#include "Stranger.hpp"
 #include "Utils.hpp"
 
 Building::Building()
@@ -22,8 +23,22 @@ void Building::openingStory()
 {
 	std::cout << "Game Story Here" << std::endl;
 }
+
+int Building::checkItems()
+{
+	std::set<std::string>::iterator iter;
+	std::set<std::string> hero_items = this->hero->getItems();
+	iter = hero_items.find("Personal Freedom");
+	if(iter != items.end())
+		return 0;
+
+	iter = hero_items.find("HP LaserJet Printer");
+	if(iter != items.end())
+		return 0;
+}
 int Building::doTurn()
 {
+
 	int result = 1,
 		menu;
 	menu = displayMenu();
@@ -42,10 +57,25 @@ int Building::doTurn()
 			this->current_office = this->current_office->travel(this->hero);
 			break;
 		case 4:
+			// check items
+			this->hero->listStats();
+			break;
+		case 5:
 			// special
 			break;
 		default:
-			result = 2; // quit game
+			std::cout << "Are you sure you want to quit?" << std::endl;
+			Utils::intakeNum(menu, "0 to quit or 1 to continue", 1);
+			switch(menu)
+			{
+				case 0:
+					// quit
+					result = 2;
+					break;
+				case 2:
+					doTurn(); // continue game
+					break;
+			}
 			break;
 	}
 	return result;
@@ -53,7 +83,7 @@ int Building::doTurn()
 void Building::setUpOffices()
 {
 	Space* youroffice = new Space(this->hero);
-	Space* breakroom = new Space(new Secretary());
+	Space* breakroom = new Space(new Stranger());
 	Space* secretary = new Space(new Secretary());
 	Space* itguy = new Space(new ITGuy());
 	Space* manager = new Space(new Manager());
@@ -129,7 +159,7 @@ int Building::displayMenu()
 		size = actions.size();
 
 	std::cout << std::endl;
-	std::cout << "Choose an action:" << std::endl;
+	std::cout << "You're in " << this->current_office->getName() << ". Choose an action:" << std::endl;
 	for (int i = 0; i < size; i++)
 	{
 		if(actions[i] != "")

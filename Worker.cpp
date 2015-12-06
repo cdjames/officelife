@@ -20,7 +20,7 @@ Worker::Worker(int att_num, 	int att_sides,
 				  )
 {
 	/* set default values */
-	std::string worker[6] = { "None", "Helpful Secretary", "Hapless IT Guy", "Billy from Receiving", "You", "Overbearing Manager" };
+	std::string worker[7] = { "None", "Helpful Secretary", "Hapless IT Guy", "Billy from Receiving", "You", "Overbearing Manager", "Stranger" };
 	attack.num = att_num;
 	attack.sides = att_sides;
 	defense.num = def_num;
@@ -201,7 +201,8 @@ void Worker::listStats() const
 {
 	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
 	
-	std::cout << "\ntype: " << this->name << std::endl;
+	// std::cout << "\ntype: " << this->name << std::endl;
+	std::cout << "\nYour items: " << std::endl;
 	// std::cout << "attack.num: " << attack.num << std::endl;
 	// std::cout << "attack.sides: " << attack.sides << std::endl;
 	// std::cout << "defense.num: " << defense.num << std::endl;
@@ -211,7 +212,7 @@ void Worker::listStats() const
 	// std::cout << "sample attack roll: " << getRoll(this->attack) << std::endl;
 	// std::cout << "sample defense roll: " << getRoll(this->defense) << std::endl;
 	for (std::set<std::string>::iterator it = this->items.begin(); it != this->items.end(); ++it)
-		std::cout << "items: " << *it << std::endl;
+		std::cout << "    • " << *it << std::endl;
 	// std::cout << ""is_dead = 
 	// std::cout << ""attack_halved = is_knocked_out = false;
 }
