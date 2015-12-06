@@ -31,6 +31,7 @@ Worker::Worker(int att_num, 	int att_sides,
 	this->name = worker[this->type];
 	// std::cout << "\ntype: " << this->name << std::endl;
 	is_dead = attack_halved = is_knocked_out = false;
+	dummyConvo.done=true;
 	setItems();
 	readConvos();
 }
@@ -296,6 +297,7 @@ void Worker::readConvos()
 						tempConvo.message = field;
 						break;
 					case 3:
+						field = field.substr(1, field.length()-2);
 						tempConvo.answer = field;
 						break;
 					case 4:
@@ -330,7 +332,7 @@ void Worker::moveInactiveConvo()
 {
 	for (int i = 0; i < this->conversations.size(); i++)
 	{
-		if(!this->conversations[i].active)
+		if(this->conversations[i].done)
 		{
 			this->inactive_convos.push_back(this->conversations[i]);
 			this->conversations.erase(this->conversations.begin()+i);

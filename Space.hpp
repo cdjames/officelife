@@ -1,5 +1,6 @@
 #ifndef SPACE_HPP
 #define SPACE_HPP
+#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
@@ -9,7 +10,7 @@
 
 class Space
 {
-private:
+protected:
 	// struct Path
 	// {
 	// 	bool active;
@@ -50,7 +51,7 @@ public:
 	** Intake a numeral and record it into a variable (with input checking)
 	*********************************************************************/
 	template <typename T>
-	void intakeNum(T &num_items, std::string message)
+	void intakeNum(T &num_items, std::string message, int upper = 1)
 	{ 
 		T imax = std::numeric_limits<T>::max(); // upper limit for T on system
 		std::cout << "Please enter "<< message << std::endl;
@@ -79,6 +80,8 @@ public:
 	virtual bool activatePath(std::string name);
 
 	virtual void removeItem(std::string item);
+
+	virtual void setActions(std::string action1 = "search", std::string action2 = "talk", std::string action3 = "move", std::string action4 = "check your items", std::string action5 = "");
 };
 
 #endif

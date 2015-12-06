@@ -14,7 +14,7 @@ LDFLAGS =
 # LDFLAGS = -lboost_date_time
 
 SRCS = Worker.cpp Secretary.cpp Billy.cpp ITGuy.cpp You.cpp Manager.cpp
-SRCS += Space.cpp
+SRCS += Space.cpp Building.cpp Utils.cpp
 # SRCS += Team.cpp Tournament.cpp
 # SRCS += play.cpp 
 SRCS += play.cpp 

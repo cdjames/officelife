@@ -1,4 +1,3 @@
-#include <iostream>
 #include <stdexcept>
 #include "Space.hpp"
 // #include "Convo.hpp" 
@@ -16,7 +15,8 @@ Space::Space(Worker* resident, Worker* visitor)
 		this->name = resident->getName() + "r office";
 	else 
 		this->name = resident->getName() + "'s office";
-	setItems();
+	setActions(); // move to children
+	setItems();	  // move to children
 }
 Space::~Space()
 {
@@ -52,17 +52,16 @@ void Space::converse(Worker* visitor)
 		}
 		if(item != "" && choice == 0)
 		{
+			std::cout << "You got the " << item << "!" << std::endl;
 			visitor->addItem(item);
 			resident->removeItem(item);
 			this->removeItem(item);
+			conversation->done = true;
+			resident->moveInactiveConvo();
 		}
-		// else
-		// {
-
-		// }
 	}
-	else
-		std::cout << "Whoops, brain fart." << std::endl;
+	else if(conversation->done)
+		std::cout << "Can't you see I'm busy?" << std::endl;
 }
 
 void Space::removeItem(std::string item)
@@ -121,7 +120,7 @@ Space* Space::travel(Worker* visitor)
 					/* if the path wasn't already active, activate it and inform user */
 					if(this->from->activatePath(savedpath->first))
 					{
-						std::cout << "You can now access " << getName() << "directly from " 
+						std::cout << "You can now access " << getName() << " directly from " 
 								  << this->from->getName() << "." << std::endl;
 					}
 				}
@@ -164,39 +163,44 @@ void Space::search(Worker* visitor)
 {
 	std::set<std::string>::iterator it = this->items.begin(),
 									saveditem;
-	std::cout << "This is what you see in the room..." << std::endl;
-
-	for (it; it != this->items.end(); ++it)
-		std::cout << "    • " << *it << std::endl;
-
-	if(this->can_take)
+	if(this->items.size() == 0)
+		std::cout << "Nothing in the room..." << std::endl;
+	else
 	{
-		std::cout << "Is there something that interests you?" << std::endl;
-		int c, choice;
-		for (it = this->items.begin(), c = 0; it != this->items.end(); ++it, c++)
-		{
-			std::cout << "    » Press " << c << " for " << *it << std::endl;
-			saveditem = it;	// save to use outside block
-		}
+		std::cout << "This is what you see in the room..." << std::endl;
 
-		intakeNum(choice, "enter your choice, or -1 to leave them.");
-		
-		switch(choice)
+		for (it; it != this->items.end(); ++it)
+			std::cout << "    • " << *it << std::endl;
+
+		if(this->can_take)
 		{
-			case -1:
-				std::cout << "Yeah, probably shouldn't take anything..." << std::endl;
-				break;
-			default:
-				saveditem = this->items.begin();
-				for (int i = 0; i < choice; i++)
-					saveditem++;
-				std::cout << "You got the " << *saveditem << "!" << std::endl;
-				// std::string save = *saved;
-				visitor->addItem(*saveditem);
-				resident->removeItem(*saveditem);
-				taken_items.insert(*saveditem);
-				items.erase(saveditem);
-				break;
+			std::cout << "Is there something that interests you?" << std::endl;
+			int c, choice;
+			for (it = this->items.begin(), c = 0; it != this->items.end(); ++it, c++)
+			{
+				std::cout << "    » Press " << c << " for " << *it << std::endl;
+				saveditem = it;	// save to use outside block
+			}
+
+			intakeNum(choice, "enter your choice, or -1 to leave them.");
+			
+			switch(choice)
+			{
+				case -1:
+					std::cout << "Yeah, probably shouldn't take anything..." << std::endl;
+					break;
+				default:
+					saveditem = this->items.begin();
+					for (int i = 0; i < choice; i++)
+						saveditem++;
+					std::cout << "You got the " << *saveditem << "!" << std::endl;
+					// std::string save = *saved;
+					visitor->addItem(*saveditem);
+					resident->removeItem(*saveditem);
+					taken_items.insert(*saveditem);
+					items.erase(saveditem);
+					break;
+			}
 		}
 	}
 
@@ -224,10 +228,26 @@ bool Space::setPaths(std::vector<std::string> names, std::vector<Path*> paths)
 			// this->paths.insert(std::pair<std::string, Path>(names[i], paths[i]));
 	}
 }
+
+void Space::setActions(std::string action1, std::string action2, std::string action3, std::string action4, std::string action5)
+{
+	if(action1 != "")
+		this->actions.push_back(action1);
+	if(action2 != "")
+		this->actions.push_back(action2);
+	if(action3 != "")
+		this->actions.push_back(action3);
+	if(action4 != "")
+		this->actions.push_back(action4);
+	if(action5 != "")
+		this->actions.push_back(action5);
+}
+
 std::string Space::getName()
 {
 	return this->name;
 }
+
 std::vector<std::string> Space::getActions()
 {
 	return this->actions;

@@ -8,10 +8,11 @@
 struct Convo
 {
 	bool active;
+	bool done;
 	std::string offer_item,
 				message,
 				answer,
 				aff_retort,
 				neg_retort;
-	Convo() { active = true; }
+	Convo() { active = true; done = false; }
 };
