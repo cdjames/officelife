@@ -7,6 +7,7 @@
 #include <set>
 #include "Worker.hpp"
 #include "Path.hpp"
+#include "Utils.hpp"
 
 class Space
 {
@@ -39,7 +40,7 @@ public:
 	virtual void converse(Worker* visitor);
 	virtual Space* travel(Worker* visitor);
 	virtual void search(Worker* visitor);
-	virtual void special() = 0; // pure virtual
+	virtual int special(Worker* visitor) = 0; // pure virtual
 	// virtual void special(){} // pure virtual
 
 	virtual void setItems(Worker* subject = NULL);

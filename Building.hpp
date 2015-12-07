@@ -21,11 +21,12 @@ private:
 	bool shirt;
 	bool cake;
 	bool hint;
-	bool freedom;
+	bool allitems;
 public:
 	Building();
 	~Building();
 	void openingStory();
+	void endingStory();
 	void setUpPaths(Space *setup, 
 			   		Space *one, Space *two, Space *three, Space *four, Space *five = NULL,
 			   		bool onebool = true, bool twobool = true, bool threebool = true, bool fourbool = false, bool fivebool = false);
@@ -35,6 +36,7 @@ public:
 	int subtractTime(int minutes);
 	int displayMenu();
 	int checkItems();
+	void foundKeyItem(std::string officename, bool &founditem, int type = 1, bool increment = false, std::string message = "Strange...this gives you an idea...");
 };
 
 #endif

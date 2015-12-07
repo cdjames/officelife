@@ -12,7 +12,7 @@ public:
 
 	virtual ~Breakroom();
 
-	virtual void special(){} // pure virtual
+	virtual int special(Worker* visitor); // pure virtual
 
 };
 

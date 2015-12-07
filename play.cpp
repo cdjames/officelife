@@ -29,9 +29,11 @@ int turnLoop(Building &game)
 	{
 		case 0:
 			// win game
+			game.endingStory();
 			break;
 		case -1:
 			// time up
+			std::cout << "Sorry, you ran out of time. See you tomorrow." << std::endl;
 			break;
 		case 2:
 			std::cout << "Quitting..." << std::endl;

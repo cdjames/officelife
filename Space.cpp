@@ -36,7 +36,7 @@ void Space::converse(Worker* visitor)
 	while(!conversation->active)
 		conversation = this->resident->getConversation();
 	int choice;
-	std::cout << "conversation active: " << conversation->active << std::endl;
+	// std::cout << "conversation active: " << conversation->active << std::endl;
 	if(conversation->active)
 	{
 		std::string name = this->resident->getName();
@@ -44,7 +44,7 @@ void Space::converse(Worker* visitor)
 		std::cout << name << " says:" << std::endl;
 		std::cout << "     " << conversation->message << std::endl;
 		std::cout << conversation->answer << std::endl;
-		intakeNum(choice, "your choice.");
+		Utils::intakeNum(choice, "your choice.", 1, 0);
 	
 		switch(choice)
 		{
@@ -89,7 +89,7 @@ Space* Space::travel(Worker* visitor)
 	std::vector<std::map<std::string, Path >::iterator > savedpath;
 	
 	std::cout << "Where would you like to go?" << std::endl;
-	/* display choices for user */
+	/* display choices for user; loop through paths map and display active paths */
 	int c = 0;
 	for (it = this->paths.begin(); it != this->paths.end(); ++it)
 	{
@@ -104,7 +104,7 @@ Space* Space::travel(Worker* visitor)
 	int choice;
 	if(savedpath.size() != 0)
 	{
-		intakeNum(choice, "your choice, or -1 to stay here.");
+		Utils::intakeNum(choice, "your choice, or -1 to stay here.", savedpath.size()-1);
 	
 		switch(choice)
 		{
@@ -114,21 +114,18 @@ Space* Space::travel(Worker* visitor)
 				break;
 			default:	// move to a path
 				/* start at beginning of paths map and move to chosen path */
-				// savedpath = this->paths.begin();
-				// for (int i = 0; i < choice; i++)
-				// 	savedpath++;
 				std::cout << "Trudging to " << savedpath[choice]->first << "." << std::endl;
-				std::cout << "Space.cpp line 121..." << std::endl;
+				// std::cout << "Space.cpp line 121..." << std::endl;
 				if(savedpath[choice]->first == "Hapless IT Guy's office"
 					|| savedpath[choice]->first == "Overbearing Manager's office")
 					Space::shortcut++;
-				std::cout << "shortcut: " << Space::shortcut << std::endl;
+				// std::cout << "shortcut: " << Space::shortcut << std::endl;
 				if(Space::shortcut == 2)
 				{
-					std::cout << "Space.cpp line 128..." << std::endl;
+					// std::cout << "Space.cpp line 128..." << std::endl;
 					if(this->paths["Hapless IT Guy's office"].destination->activatePath("Overbearing Manager's office"))
 					{
-						std::cout << "Space.cpp line 131..." << std::endl;
+						// std::cout << "Space.cpp line 131..." << std::endl;
 						std::cout << "You can now access " << "Hapless IT Guy's office" << " directly from " 
 								  << "Overbearing Manager's office" << "." << std::endl;
 
@@ -136,7 +133,7 @@ Space* Space::travel(Worker* visitor)
 						Space::shortcut++;
 					}
 				}
-				std::cout << "Space.cpp line 136..." << std::endl;
+				// std::cout << "Space.cpp line 136..." << std::endl;
 				/* make the current space active in previous space if it wasn't */
 				if(this->from != NULL)
 				{
@@ -148,7 +145,7 @@ Space* Space::travel(Worker* visitor)
 						savedpath[choice]->second.destination->activatePath(this->from->getName());
 					}
 				}
-				std::cout << "Space.cpp line 148..." << std::endl;
+				// std::cout << "Space.cpp line 148..." << std::endl;
 				/* set this object as the "from" object in the destination space */
 				savedpath[choice]->second.destination->setFrom(this);
 				/* if there was a visitor, remove it */
@@ -207,7 +204,7 @@ void Space::search(Worker* visitor)
 				saveditem = it;	// save to use outside block
 			}
 
-			intakeNum(choice, "enter your choice, or -1 to leave them.");
+			Utils::intakeNum(choice, "enter your choice, or -1 to leave them.", c);
 			
 			switch(choice)
 			{

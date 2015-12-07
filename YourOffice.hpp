@@ -6,13 +6,14 @@
 class YourOffice : public Space
 {
 protected:
+	bool gotREM;
 
 public:
 	YourOffice(Worker* resident = NULL, Worker* visitor = NULL);
 
 	virtual ~YourOffice();
 
-	virtual void special(){} // pure virtual
+	virtual int special(Worker* visitor);
 
 	// virtual void deItem();
 };

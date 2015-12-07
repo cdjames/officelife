@@ -221,7 +221,7 @@ void Worker::listStats() const
 		// std::cout << ""attack_halved = is_knocked_out = false;
 	} 
 	else
-		std::cout << "\nYou don't have anything yet." << std::endl;
+		std::cout << "\nYou don't have anything." << std::endl;
 }
 
 void Worker::revive()
