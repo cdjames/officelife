@@ -288,16 +288,16 @@ void Worker::readConvos()
 			int count = 0;
 			while (getline(sLine, field, '^'))
 			{
-				if(this->getName() == "Helpful Secretary")
-					std::cout << field << std::endl;
+				// if(this->getName() == "Helpful Secretary")
+				// 	std::cout << field << std::endl;
 				switch(count)
 				{
 					case 0:
 						if(field == "FALSE")
 						{
 							tempConvo.active = false;
-							if(this->getName() == "Helpful Secretary")
-								std::cout << "convo active false " << tempConvo.active << std::endl;
+							// if(this->getName() == "Helpful Secretary")
+								// std::cout << "convo active false " << tempConvo.active << std::endl;
 							// std::cout << field << std::endl;
 						}
 							
@@ -321,6 +321,13 @@ void Worker::readConvos()
 						break;
 					case 5:
 						tempConvo.neg_retort = field;
+						break;
+					case 6:
+						if(field == "")
+							field = "";
+						else // trim first and last characters
+							field = field.substr(1, field.length()-2);
+						tempConvo.need_item = field;
 						break;
 				}
 

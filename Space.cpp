@@ -10,15 +10,12 @@ Space::Space(Worker* resident, Worker* visitor)
 	this->visitor = visitor;
 	this->from = NULL;
 	this->can_take = false;
-	// std::cout << resident->getName() << std::endl;
-	if(resident == NULL)
-		this->name = "Break room";
-	else if(resident->getName() == "You")
+	if(resident->getName() == "You")
 		this->name = resident->getName() + "r office";
 	else 
 		this->name = resident->getName() + "'s office";
-	setActions(); // move to children
-	setItems();	  // move to children
+	setActions();
+	setItems();
 }
 Space::~Space()
 {
@@ -41,6 +38,8 @@ void Space::converse(Worker* visitor)
 	{
 		std::string name = this->resident->getName();
 		std::string item = conversation->offer_item;
+		std::string needed = conversation->need_item;
+		// std::cout << name << " needs " << needed << std::endl; // testing
 		std::cout << name << " says:" << std::endl;
 		std::cout << "     " << conversation->message << std::endl;
 		std::cout << conversation->answer << std::endl;
@@ -48,10 +47,10 @@ void Space::converse(Worker* visitor)
 	
 		switch(choice)
 		{
-			case 0:	// don't move
+			case 0:	// one answer
 				std::cout << conversation->aff_retort << std::endl;
 				break;
-			case 1:	// don't move
+			case 1:	// another answer
 				std::cout << conversation->neg_retort << std::endl;
 				break;
 		}
@@ -59,6 +58,8 @@ void Space::converse(Worker* visitor)
 		{
 			std::cout << "You got the " << item << "!" << std::endl;
 			visitor->addItem(item);
+			if(needed != "")
+				visitor->removeItem(needed);
 			resident->removeItem(item);
 			this->removeItem(item);
 			conversation->done = true;

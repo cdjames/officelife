@@ -1,2 +1,2 @@
-TRUE^^"Hey, did you turn on that antivirus software?"^"Press 0 for “yes” and 1 for “no”"^"Well, I'll check it anyway."^"Alright, I'll have to do it for you."
-FALSE^"HP LaserJet Printer"^"Is that a Hawaiian shirt? I'll trade you for this printer."^"Press 0 for “yes” and 1 for “no”"^"Rad shirt! Enjoy that shitty printer."^"Your loss dude."
+"TRUE"^^"Hey, did you turn on that antivirus software?"^"Press 0 for “yes” and 1 for “no”"^"Well, I'll check it anyway."^"Alright, I'll have to do it for you."^
+"FALSE"^"HP LaserJet Printer"^"Is that a Hawaiian shirt? I'll trade you for this printer."^"Press 0 for “yes” and 1 for “no”"^"Rad shirt! Enjoy that shitty printer."^"Your loss dude."^"Hawaiian shirt"

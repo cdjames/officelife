@@ -9,8 +9,8 @@
 #include <stdlib.h>		// for srand()
 #include <ctime>		// for time()
 #include <vector>
-// #include "Worker.hpp"
-// #include "Secretary.hpp"
+#include "Worker.hpp"
+#include "Secretary.hpp"
 // #include "Billy.hpp"
 // #include "ITGuy.hpp"
 // #include "You.hpp"
@@ -52,9 +52,6 @@ int main()
 	
 	Building game;
 	turnLoop(game);
-	// int result = 1;
-	// while(result != 0 && result != -1 && result != 2)
-	// 	result = game.doTurn();
 	
 	
 
@@ -71,7 +68,7 @@ int main()
 	// // std::cout << "pencil is " << worker->getItem("pencil") << std::endl;
 	// // std::cout << "pen is " << worker->getItem("pen") << std::endl;
 
-	// Space *secrOffice = new Space(secretary);
+	// Space *secrOffice = new FriendlyOffice(secretary);
 	// Space *itOffice = new Space(itguy);
 	// Space *youroffice = new Space(you);
 	// Space *current = new Space(you);
