@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A specialized Space w/ compliments
+*********************************************************************/
 #ifndef FO_HPP
 #define FO_HPP
 #include "Worker.hpp"

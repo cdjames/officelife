@@ -1,4 +1,8 @@
-// #include "Space.hpp"
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A struct for storing path information
+*********************************************************************/
 class Space;
 
 struct Path

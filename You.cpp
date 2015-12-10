@@ -64,5 +64,5 @@ double You::defend(double attack_val, CharType attacker, bool halve_attack)
 
 void You::removeItems()
 {
-		this->items.clear();
+	this->items.clear();
 }

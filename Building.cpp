@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A class to set up offices and handle game logic
+*********************************************************************/
 #include "Building.hpp"
 #include "Secretary.hpp"
 #include "Billy.hpp"
@@ -7,6 +12,7 @@
 #include "Stranger.hpp"
 #include "YourOffice.hpp"
 #include "Utils.hpp"
+// #include <sstream>
 
 Building::Building()
 {
@@ -17,19 +23,56 @@ Building::Building()
 	this->found_items = 0;
 	this->stapler = this->printer = this->suspenders = this->allitems = false;
 }
+
 Building::~Building()
 {
 	if(hero != NULL)
 		delete hero;
 }
+
 void Building::openingStory()
 {
-	std::cout << "Opening Story Here" << std::endl;
+	std::string opening = 
+		"\n    You are a nondescript office worker in an average office in the United States. Your days are haunted";
+		opening += 
+		" by an overbearing boss and a hapless IT guy. However, the office secretary is very helpful, and Billy from";
+		opening += 
+		" Receiving gets you free stuff sometimes.";
+		opening += 
+		"\n    Every day you silently wonder: \"How did I get here? What is the purpose of my life?\" You don't have";
+		opening += 
+		" the answers to these questions, but it seems to you that you could find them if only you could achieve... \n";
+		opening += 
+		"                            Personal Freedom®\n";
+		opening += 
+		"\nYou are in your office...";
+	std::cout << opening << std::endl;
 }
 
 void Building::endingStory()
 {
-	std::cout << "Ending Story Here" << std::endl;
+	int year = Utils::currentYear();
+	std::string ending = 
+		"\n    It turns out that the \"Stranger\" in the breakroom was an actor from 1999's classic Office Space.";
+		ending +=
+		" He had been looking for the three items you sold him for ";
+		// std::cout << Utils::currentYear()-1999; 
+		// std::cout << year; 
+		ending+= Utils::intToString(year-1999); 
+		ending+= " years.\n";
+		ending +=
+		"    In his ecstacy at finding the items, he agreed to buy them from you for $10 million, granting you";
+		ending +=
+		" the freedom to pursue whichever interests you desired. You promptly quit your job, bought an island and";
+		ending +=
+		" an airplane, and received your pilot's license. On your way to your personal island, you crashed your plane";
+		ending +=
+		" into a blue whale somewhere between here and Micronesia, killing both the whale and yourself.\n";
+		ending +=
+		"    It turns out that, even with $10 million dollars, a person still dies and doesn't get to fulfill all of";
+		ending +=
+		" his or her dreams. But at least you won this game. May you rest in peace.\n";
+	std::cout << ending << std::endl;
 }
 
 int Building::checkItems()
@@ -48,79 +91,47 @@ int Building::checkItems()
 		{
 			iter = hero_items.find("HP LaserJet Printer");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("", this->printer, 0, true, "Hmm, I wonder...");
-				// std::cout << "Strange...this gives you an idea..." << std::endl;
-				// this->printer = true;
-				// this->found_items++;
-			}
 		}
 		
 		if(!this->stapler)
 		{
 			iter = hero_items.find("Red Swingline Stapler");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("", this->stapler, 0, true, "Hmm, I wonder...");
-				// std::cout << "Strange...this gives you an idea..." << std::endl;
-				// this->stapler = true;
-				// this->found_items++;
-			}
 		}
 		
 		if(!this->suspenders)
 		{
 			iter = hero_items.find("Chotchkie's suspenders");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("Helpful Secretary", this->suspenders, 1, true, "I bet Sue would love to see these...");
-				// std::cout << "Strange...this gives you an idea..." << std::endl;
-				// this->offices["Helpful Secretary"]->getResident()->setConvosActive();
-				// this->suspenders = true;
-				// this->found_items++;
-			}
 		}
 
 		if(!this->shirt)
 		{
 			iter = hero_items.find("Hawaiian shirt");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("Hapless IT Guy", this->shirt);
-				// std::cout << "Strange...this gives you an idea..." << std::endl;
-				// this->offices["Hapless IT Guy"]->getResident()->setConvosActive();
-				// this->shirt = true;
-			}
 		}
 
 		if(!this->cake)
 		{
 			iter = hero_items.find("cake");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("Billy from Receiving", this->cake);
-			}
 		}
 
 		if(!this->hint)
 		{
 			iter = hero_items.find("hint");
 			if(iter != hero_items.end())
-			{
 				foundKeyItem("Overbearing Manager", this->hint, 2);
-				// this->offices["Overbearing Manager"]->setCanTake();
-			}
 		}
 	}
 	else if(!allitems)
-	{
-		// iter = hero_items.find("Personal Freedom");
-		// if(iter != hero_items.end())
-		// {
-			foundKeyItem("Breakroom", this->allitems, 1, false, "");
-			// this->offices["Breakroom"]->getResident()->setConvosActive();	
-		// }
-	}
+		foundKeyItem("Breakroom", this->allitems, 1, false, "");
+
 	/* check for end of game again */
 	iter = hero_items.find("Personal Freedom");
 	if(iter != hero_items.end())
@@ -153,7 +164,6 @@ void Building::foundKeyItem(std::string officename, bool &founditem, int type, b
 
 int Building::doTurn()
 {
-
 	int result = checkItems(),
 		menu,
 		special;
@@ -178,15 +188,19 @@ int Building::doTurn()
 			subtractTime(5);
 			break;
 		case 4:
-			// check items
+			// check user items
 			this->hero->listStats();
 			subtractTime(5);
 			break;
 		case 5:
+			// print goal of game
+			std::cout << "Sell 3 Office Space-themed items to the Stranger.	" << std::endl;
+			subtractTime(240);
+			break;
+		case 6:
+			// special
 			special = this->current_office->special(this->hero);
 			subtractTime(special);
-
-			// special
 			break;
 		default:
 			std::cout << "Are you sure you want to quit?" << std::endl;
@@ -236,6 +250,7 @@ void Building::setUpOffices()
 
 	this->current_office = youroffice;
 }
+
 void Building::setUpPaths(Space *setup, 
 						  Space *one, Space *two, Space *three, Space *four, Space *five,
 						  bool onebool, bool twobool, bool threebool, bool fourbool, bool fivebool)
@@ -274,16 +289,19 @@ void Building::setUpPaths(Space *setup,
 
 	setup->setPaths(names, paths);
 }
+
 int Building::getTime()
 {
 	return this->time;
 }
+
 int Building::subtractTime(int minutes)
 {
 	std::cout << "You wasted " << minutes << " minutes of your life." << std::endl;
 	this->time -= minutes;
 	return getTime();
 }
+
 int Building::displayMenu()
 {
 	std::vector<std::string> actions = this->current_office->getActions();

@@ -175,6 +175,11 @@ Convo* Worker::getConversation()
 	}
 }
 
+std::vector<Convo>* Worker::getAllConversations()
+{
+	return &this->conversations;
+}
+
 bool Worker::removeItem(std::string item)
 {
 	std::set<std::string>::iterator iter;
@@ -192,6 +197,7 @@ bool Worker::removeItem(std::string item)
 bool Worker::addItem(std::string item)
 {
 	this->items.insert(item);
+	return true;
 }
 
 std::set<std::string> Worker::getItems()
@@ -199,7 +205,6 @@ std::set<std::string> Worker::getItems()
 	return this->items;
 }
 
-/* for testing */
 void Worker::listStats() const
 {
 	// std::string worker[6] = { "None", "Helpful Secretary", "Billy from Receiving", "Hapless IT Guy", "You", "Overbearing Manager" };
@@ -230,12 +235,23 @@ void Worker::revive()
 	is_dead = attack_halved = is_knocked_out = false;
 }
 
-int Worker::heal(int factor)
+int Worker::heal(int factor, bool level_up)
 {
 	int heal_amount;
-	heal_amount = (orig_strength - strength) / factor; // factor will be 2 by default
+	if(level_up)
+		increaseAttributes();
+	heal_amount = (this->orig_strength - this->strength) / factor; // factor will be 2 by default
 	this->strength += heal_amount;
+	this->is_dead = this->attack_halved = this->is_knocked_out = false; // also bring back from dead
 	return this->strength;
+}
+
+void Worker::increaseAttributes()
+{
+	attack.num++;
+	defense.sides++;
+	armor++;
+	orig_strength++;
 }
 
 void Worker::kill()
@@ -292,15 +308,9 @@ void Worker::readConvos()
 				// 	std::cout << field << std::endl;
 				switch(count)
 				{
-					case 0:
+					case 0: // deactivate certain conversations
 						if(field == "FALSE")
-						{
 							tempConvo.active = false;
-							// if(this->getName() == "Helpful Secretary")
-								// std::cout << "convo active false " << tempConvo.active << std::endl;
-							// std::cout << field << std::endl;
-						}
-							
 						break;
 					case 1:
 						if(field == "")
@@ -335,7 +345,6 @@ void Worker::readConvos()
 			}
 			this->conversations.push_back(tempConvo);
 		}
-		// std::cout << this->conversations[1].active << std::endl;
 	}
 	/* close the files */
 	inputFile.close();

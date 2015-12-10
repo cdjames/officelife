@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A class to set up offices and handle game logic
+*********************************************************************/
 #ifndef BUILDING_HPP
 #define BUILDING_HPP
 #include "Worker.hpp"

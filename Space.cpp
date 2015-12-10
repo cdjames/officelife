@@ -1,15 +1,28 @@
-#include <stdexcept>
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A class that mimics an office space
+*********************************************************************/
+// #include <stdexcept>
 #include "Space.hpp"
 // #include "Convo.hpp" 
 
-int Space::shortcut = 0;
+// int Space::shortcut = 0;
 
 Space::Space(Worker* resident, Worker* visitor)
 {
 	this->resident = resident;
 	this->visitor = visitor;
 	this->from = NULL;
-	this->can_take = false;
+	this->can_take = this->unlock_shortcut = false;
+	this->itvisits = this->bossvisits = 0;
+	this->worker_names[0] = "None";		// names for workers
+	this->worker_names[1] = "Helpful Secretary";
+	this->worker_names[2] = "Hapless IT Guy";
+	this->worker_names[3] = "Billy from Receiving";
+	this->worker_names[4] = "You";
+	this->worker_names[5] = "Overbearing Manager";
+	this->worker_names[6] = "Stranger";
 	if(resident->getName() == "You")
 		this->name = resident->getName() + "r office";
 	else 
@@ -86,8 +99,8 @@ void Space::removeItem(std::string item)
 
 Space* Space::travel(Worker* visitor)
 {
-	std::map<std::string, Path>::iterator it = this->paths.begin();
-	std::vector<std::map<std::string, Path >::iterator > savedpath;
+	std::map<std::string, Path>::iterator it = this->paths.begin(); // to iterate through paths
+	std::vector<std::map<std::string, Path >::iterator > savedpath; // to save found paths
 	
 	std::cout << "Where would you like to go?" << std::endl;
 	/* display choices for user; loop through paths map and display active paths */
@@ -114,28 +127,34 @@ Space* Space::travel(Worker* visitor)
 				return this;
 				break;
 			default:	// move to a path
-				/* start at beginning of paths map and move to chosen path */
+				/* notify user */
 				std::cout << "Trudging to " << savedpath[choice]->first << "." << std::endl;
-				// std::cout << "Space.cpp line 121..." << std::endl;
-				if(savedpath[choice]->first == "Hapless IT Guy's office"
-					|| savedpath[choice]->first == "Overbearing Manager's office")
-					Space::shortcut++;
-				// std::cout << "shortcut: " << Space::shortcut << std::endl;
-				if(Space::shortcut == 2)
+				
+				/* unlock shortcut from IT to manager if not unlocked*/
+				if(!unlock_shortcut)
 				{
-					// std::cout << "Space.cpp line 128..." << std::endl;
-					if(this->paths["Hapless IT Guy's office"].destination->activatePath("Overbearing Manager's office"))
-					{
-						// std::cout << "Space.cpp line 131..." << std::endl;
-						std::cout << "You can now access " << "Hapless IT Guy's office" << " directly from " 
-								  << "Overbearing Manager's office" << "." << std::endl;
+					if(savedpath[choice]->first == "Hapless IT Guy's office")
+						this->itvisits++;
+					else if (savedpath[choice]->first == "Overbearing Manager's office")
+						this->bossvisits++;
 
-						this->paths["Overbearing Manager's office"].destination->activatePath("Hapless IT Guy's office");
-						Space::shortcut++;
+					if(this->bossvisits > 0 && this->itvisits > 0)
+					{
+						// std::cout << "Space.cpp line 137..." << std::endl;
+						if(this->paths["Hapless IT Guy's office"].destination->activatePath("Overbearing Manager's office"))
+						{
+							// std::cout << "Space.cpp line 140..." << std::endl;
+							std::cout << "You can now access " << "Hapless IT Guy's office" << " directly from " 
+									  << "Overbearing Manager's office" << "." << std::endl;
+
+							this->paths["Overbearing Manager's office"].destination->activatePath("Hapless IT Guy's office");
+						}
+						unlock_shortcut = true;
 					}
 				}
-				// std::cout << "Space.cpp line 136..." << std::endl;
-				/* make the current space active in previous space if it wasn't */
+				
+				/* make the current space active in previous space if it wasn't 
+				   unlocks shortcut from your office to secretary */
 				if(this->from != NULL)
 				{
 					/* if the path wasn't already active, activate it and inform user */
@@ -146,7 +165,7 @@ Space* Space::travel(Worker* visitor)
 						savedpath[choice]->second.destination->activatePath(this->from->getName());
 					}
 				}
-				// std::cout << "Space.cpp line 148..." << std::endl;
+				
 				/* set this object as the "from" object in the destination space */
 				savedpath[choice]->second.destination->setFrom(this);
 				/* if there was a visitor, remove it */
@@ -161,12 +180,13 @@ Space* Space::travel(Worker* visitor)
 		std::cout << "Oh, wait, you're stuck here." << std::endl;
 		return this;
 	}
+
+	return this;
 }
 
 bool Space::activatePath(std::string name)
 {
-	// std::cout << "path to activate: " << name << std::endl;
-
+	/* find the name of the path; if not active, activate it */
 	std::map<std::string, Path>::iterator it = this->paths.find(name);
 	if (it != this->paths.end() && it->second.active == false)
 	{
@@ -182,10 +202,11 @@ void Space::setFrom(Space* from)
 	this->from = from;
 }
 
-void Space::search(Worker* visitor)
+std::string Space::search(Worker* visitor)
 {
 	std::set<std::string>::iterator it = this->items.begin(),
 									saveditem;
+	std::string returnitem = "";
 	if(this->items.size() == 0)
 		std::cout << "Nothing in the room..." << std::endl;
 	else
@@ -218,9 +239,13 @@ void Space::search(Worker* visitor)
 						saveditem++;
 					std::cout << "You got the " << *saveditem << "!" << std::endl;
 					// std::string save = *saved;
+					returnitem = *saveditem;
 					visitor->addItem(*saveditem);
 					if(resident != visitor) // if not in your own office
+					{
 						resident->removeItem(*saveditem);
+						// std::cout << "Removed " << *saveditem << std::endl;
+					}
 					taken_items.insert(*saveditem);
 					items.erase(saveditem);
 					break;
@@ -228,6 +253,7 @@ void Space::search(Worker* visitor)
 		}
 	}
 
+	return returnitem;
 }
 
 void Space::setItems(Worker* subject)
@@ -244,16 +270,16 @@ bool Space::setPaths(std::vector<std::string> names, std::vector<Path*> paths)
 	int namesize = names.size();
 	int pathssize = paths.size();
 	if(namesize != pathssize)
-		return 0;
+		return false;
 	else
 	{
 		for (int i = 0; i < namesize; i++)
 			this->paths[names[i]] = *paths[i];
-			// this->paths.insert(std::pair<std::string, Path>(names[i], paths[i]));
 	}
+	return true;
 }
 
-void Space::setActions(std::string action1, std::string action2, std::string action3, std::string action4, std::string action5)
+void Space::setActions(std::string action1, std::string action2, std::string action3, std::string action4, std::string action5, std::string action6)
 {
 	if(action1 != "")
 		this->actions.push_back(action1);
@@ -265,6 +291,8 @@ void Space::setActions(std::string action1, std::string action2, std::string act
 		this->actions.push_back(action4);
 	if(action5 != "")
 		this->actions.push_back(action5);
+	if(action6 != "")
+		this->actions.push_back(action6);
 }
 
 std::string Space::getName()
@@ -284,23 +312,6 @@ std::vector<std::string> Space::getActions()
 void Space::addVisitor(Worker *visitor)
 {
 	this->visitor = visitor;
-}
-
-void Space::clearCin()
-{
-	std::cin.clear();
-	std::cin.ignore(50, '\n');
-}
-
-bool Space::cinFail()
-{
-	bool failed = false;
-	if(std::cin.fail()) // check for bad input
-	{
-		clearCin(); // ignore the bad input
-		failed = true;
-	}
-	return failed;
 }
 
 void Space::deItem()

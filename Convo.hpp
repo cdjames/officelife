@@ -1,7 +1,7 @@
 /*********************************************************************
 ** Author: Collin James
-** Date: 
-** Description: 
+** Date: 12/8/15
+** Description: A struct to hold conversation information
 *********************************************************************/
 #include <string>
 

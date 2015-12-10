@@ -1,7 +1,14 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: Utilities for any program
+*********************************************************************/
 #ifndef UTILS_HPP
 #define UTILS_HPP
 #include <limits>
 #include <iostream>
+#include <sstream>
+#include <ctime>
 
 class Utils
 {
@@ -36,6 +43,10 @@ public:
 		Utils::clearCin();
 		return;
 	}
+
+	static int currentYear();
+
+	static std::string intToString(int num);
 };
 
 #endif

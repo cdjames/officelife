@@ -169,7 +169,7 @@ public:
 	** Example: Original health 12 - current health 6 = 6÷2 = +3 to health
 	** Returns updated health
 	*********************************************************************/
-	virtual int heal(int factor = 2);
+	virtual int heal(int factor = 2, bool level_up = true);
 
 	/*********************************************************************
 	** Description: 
@@ -182,6 +182,8 @@ public:
 
 	virtual void readConvos();
 
+	virtual std::vector<Convo>* getAllConversations();
+
 	virtual void replaceSpaces(std::string &string, std::string what, std::string rep);
 
 	virtual void moveInactiveConvo();
@@ -189,6 +191,8 @@ public:
 	virtual std::string getName();
 
 	virtual void setConvosActive();
+
+	virtual void increaseAttributes();
 }; // class Worker
 
 #endif

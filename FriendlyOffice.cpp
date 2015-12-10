@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A specialized Space w/ compliments
+*********************************************************************/
 #include "FriendlyOffice.hpp"
 #include <fstream>
 #include <sstream>
@@ -28,6 +33,7 @@ int FriendlyOffice::special(Worker* visitor)
 		if(!gotEsteem)
 		{
 			visitor->addItem("Self Esteem");
+			visitor->heal();
 			this->gotEsteem = true;
 		}
 	}

@@ -1,10 +1,12 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A specialized Space w/ napping
+*********************************************************************/
 #include "YourOffice.hpp"
-// #include "Convo.hpp" 
 
 YourOffice::YourOffice(Worker* resident, Worker* visitor) : Space(resident, visitor)
 {
-	// setActions(); // move to children
-	// setItems();	  // move to children
 	gotREM = false;
 	this->actions.push_back("nap");
 }
@@ -22,12 +24,13 @@ int YourOffice::special(Worker* visitor)
 	{
 		case 0:	// nap
 			std::cout << "(Oh man, I feel great!)" << std::endl;
+			visitor->heal(3, false);
 			if(!gotREM)
 			{
 				this->resident->addItem("REM cycles");
 				this->gotREM = true;
 			}
-			time = 60;
+			time = 45;
 			break;
 		default: // nap
 			std::cout << "(Right, no time for that.)" << std::endl;

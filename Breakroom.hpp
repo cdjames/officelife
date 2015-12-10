@@ -1,3 +1,8 @@
+/*********************************************************************
+** Author: Collin James
+** Date: 12/8/15
+** Description: A specialized Space w/ eating
+*********************************************************************/
 #ifndef BR_HPP
 #define BR_HPP
 #include "Worker.hpp"
@@ -12,7 +17,7 @@ public:
 
 	virtual ~Breakroom();
 
-	virtual int special(Worker* visitor); // pure virtual
+	virtual int special(Worker* visitor);
 
 };
 

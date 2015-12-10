@@ -18,8 +18,8 @@ public:
 	** Default constructor. Will pass these values to Worker constructor.
 	** Set default attributes here.
 	*********************************************************************/
-	Manager(int att_num=3, 	int att_sides=15, 
-			  int def_num=3,	int def_sides=15, 	
+	Manager(int att_num=6, 	int att_sides=15, 
+			  int def_num=6,	int def_sides=15, 	
 			  int arm=20, 	double str=30, 		
 			  CharType t=MANAGER
 			 );
